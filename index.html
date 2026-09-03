@@ -1,224 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
+    <title>Warning</title>
 
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<title>Reward!</title>
-<meta property="og:title" content="Screenshot">
-<meta property="og:site_name" content="Lightshot">
-<meta property="og:image" content="images/lightshot.png">
-<meta property="og:description" content="Captured with Lightshot">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="photo">
-<meta name="twitter:title" content="Screenshot">
-<meta name="twitter:site" content="@light_shot">
-<meta name="twitter:description" content="Captured with Lightshot">
-<meta name="twitter:image:src" content="lightshot.png">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&amp;display=swap" rel="stylesheet">
-<style type="text/css">
-            p {
-                margin: 0;
-            }
+    <meta property="og:title" content="Screenshot">
+    <meta property="og:site_name" content="Lightshot">
+    <meta property="og:image" content="images/lightshot.png">
+    <meta property="og:description" content="Captured with Lightshot">
+    <meta property="og:type" content="website">
 
-            *, *::before, *::after {
-                box-sizing: border-box;
-            }
+    <meta name="twitter:card" content="photo">
+    <meta name="twitter:title" content="Screenshot">
+    <meta name="twitter:site" content="@light_shot">
+    <meta name="twitter:description" content="Captured with Lightshot">
+    <meta name="twitter:image:src" content="lightshot.png">
 
-            .overlay, .scare {
-                position: fixed;
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&display=swap"
+        rel="stylesheet"
+    >
 
-                top: 0;
-                left: 0;
+    <style>
+        p {
+            margin: 0;
+        }
 
-                height: 100vh;
-                width: 100vw;
-            }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
 
-            p.overlay-title {
-                font-size: 24px;
-                font-weight: 900;
-                color: black;
-                line-height: 1;
+        .overlay,
+        .scare {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+        }
 
-                margin-bottom: 16px;
-            }
+        p.overlay-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: black;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
 
-            .overlay-button {
-                display: inline-flex;
-                align-items: center;
+        .overlay-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
 
-                height: 40px;
+            height: 40px;
+            padding: 0 24px;
 
-                padding-right: 24px;
-                padding-left: 24px;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1;
 
-                font-size: 16px;
-                font-weight: 500;
-                line-height: 1;
+            border-radius: 4px;
+            margin: 4px;
+            cursor: pointer;
+        }
 
-                border-radius: 4px;
+        .overlay-buttons-wrapper {
+            margin: 24px -8px -8px;
+        }
 
-                margin: 4px;
+        #accept-button {
+            background-color: rgb(132, 94, 194);
+            color: white;
+        }
 
-                cursor: pointer;
-            }
+        #decline-button {
+            color: rgb(132, 94, 194);
+            border: 2px solid rgb(132, 94, 194);
+        }
 
-            .overlay-buttons-wrapper {
-                margin: 24px -8px -8px;
-            }
+        p.overlay-description {
+            font-size: 16px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.5);
+            line-height: 1.25;
+            margin-bottom: 16px;
+        }
 
-            #accept-button {
-                background-color: rgb(132, 94, 194);
+        a.overlay-link {
+            display: inline-block;
+            text-decoration: none;
 
-                color: white;
-            }
+            font-size: 16px;
+            font-weight: 500;
+            color: rgb(132, 94, 194);
+            line-height: 1;
 
-            #decline-button {
-                color: rgb(132, 94, 194);
+            position: relative;
+            margin-top: 16px;
+        }
 
-                border: 2px solid rgb(132, 94, 194);
-            }
+        a.overlay-link::before {
+            position: absolute;
+            content: "";
 
-            p.overlay-description {
-                font-size: 16px;
-                font-weight: 400;
-                color: rgba(0, 0, 0, 0.5);
-                line-height: 1.25;
+            height: calc(50% + 4px);
+            width: calc(100% + 8px);
 
-                margin-bottom: 16px;
-            }
+            bottom: -4px;
+            left: -4px;
 
-            a.overlay-link {
-                display: inline-block;
+            background-color: rgba(132, 94, 194, 0.1);
+        }
 
-                text-decoration: none;
+        .overlay-body {
+            max-width: 512px;
+            text-align: center;
+            font-family: "Inter", sans-serif;
+        }
 
-                font-size: 16px;
-                font-weight: 500;
-                color: rgb(132, 94, 194);
-                line-height: 1;
+        .overlay[hidden] {
+            display: none;
+        }
 
-                position: relative;
+        .overlay {
+            z-index: 2;
 
-                margin-top: 16px;
-            }
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            a.overlay-link::before {
-                position: absolute;
+            background-color: #f5f6fa;
 
-                content: "";
+            padding-left: 24px;
+            padding-right: 24px;
+        }
 
-                height: calc(50% + 4px);
-                width: calc(100% + 8px);
+        .scare {
+            z-index: 1;
+            background: black;
+        }
 
-                bottom: -4px;
-                left: -4px;
+        video#video {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
 
-                background-color: rgba(132, 94, 194, 0.1);
-            }
-
-            .overlay-body {
-                max-width: 512px;
-
-                text-align: center;
-
-                font-family: "Inter", sans-serif;
-            }
-
-            .overlay[hidden] {
-                display: none;
-            }
-
-            .overlay {
-                z-index: 2;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                background-color: #f5f6fa;
-
-                padding-right: 24px;
-                padding-left: 24px;
-            }
-
-            .scare {
-                z-index: 1;
-            }
-
-            video#video {
-                height: 100%;
-                width: 100%;
-
-                object-fit: cover;
-            }
-
-            video#video::-webkit-media-controls-enclosure {
-                display:none !important;
-            }
-        </style>
+            /*
+             * Keep the native video controls visible.
+             * This gives you a draggable timeline/seek bar.
+             */
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body>
-<div id="overlay" class="overlay">
-<div class="overlay-body">
 
-<hr>
-<p class="overlay-title">Watch the video above.</p>
-<p class="overlay-description">This is sensitive content, viewer discretion is advised. If you're not comfortable with such things like suicide or gore, please click off.</p>
-<div class="overlay-buttons-wrapper">
-<div id="accept-button" class="overlay-button">Watch video</div>
-</div>
-<a href="https://a9fm.site/" target="_blank" class="overlay-link"></a>
-</div>
-</div>
+    <div id="overlay" class="overlay">
+        <div class="overlay-body">
 
-<div class="scare">
-<video id="video" class="video" src="https://videos.watchpeopledie.tv/16762429520148919.mp4" loop></video>
-</div>
-<script type="text/javascript">
-            const video = document.getElementById("video");
-            const overlay = document.getElementById("overlay");
-            const declineButton = document.getElementById("decline-button");
-            const acceptButton = document.getElementById("accept-button");
+            <hr>
 
-            let hasClicked;
+            <p class="overlay-title">
+                Watch the video above.
+            </p>
 
-            window.onbeforeunload = function( ) {
-                if(hasClicked) return true;
-            };
+            <p class="overlay-description">
+                This is sensitive content, viewer discretion is advised.
+                If you're not comfortable with such things like suicide or gore,
+                please click off.
+            </p>
 
-            function buttonClick(event) {
-                event.preventDefault();
-                if(!hasClicked) hasClicked = true;
-                overlay.hidden = true;
+            <div class="overlay-buttons-wrapper">
+                <div id="accept-button" class="overlay-button">
+                    Watch video
+                </div>
+
+                <div id="decline-button" class="overlay-button">
+                    Close
+                </div>
+            </div>
+
+            <a
+                href="https://a9fm.site/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="overlay-link"
+            ></a>
+
+        </div>
+    </div>
+
+    <div class="scare">
+        <video
+            id="video"
+            class="video"
+            src="https://videos.watchpeopledie.tv/16762429520148919.mp4"
+            loop
+            controls
+            playsinline
+            preload="metadata"
+        ></video>
+    </div>
+
+    <script>
+        const video = document.getElementById("video");
+        const overlay = document.getElementById("overlay");
+        const acceptButton = document.getElementById("accept-button");
+        const declineButton = document.getElementById("decline-button");
+
+        let hasClicked = false;
+
+        window.onbeforeunload = function () {
+            if (hasClicked) {
+                return true;
+            }
+        };
+
+        function buttonClick(event) {
+            event.preventDefault();
+
+            hasClicked = true;
+
+            overlay.hidden = true;
+
+            /*
+             * Start the video.
+             */
+            video.play().catch(function (error) {
+                console.log("Playback could not start:", error);
+            });
+
+            /*
+             * Enter fullscreen.
+             */
+            enterFullscreen();
+        }
+
+        function enterFullscreen() {
+            const element = document.documentElement;
+
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
+        }
+
+        /*
+         * Watch video button.
+         */
+        acceptButton.addEventListener("click", buttonClick);
+
+        /*
+         * Close button.
+         */
+        declineButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            overlay.hidden = true;
+
+            video.pause();
+        });
+
+        /*
+         * Clicking the video enters fullscreen.
+         *
+         * The native controls remain enabled, so you can:
+         * - Drag the timeline
+         * - Jump to any point in the video
+         * - Play/pause
+         * - Change volume
+         * - Enter/exit fullscreen
+         */
+        video.addEventListener("click", function () {
+            if (video.paused) {
                 video.play();
-                videoClick();
             }
+        });
+    </script>
 
-            function videoClick(event) {
-                if(event) event.preventDefault();
-                // if not fullscreen
-                const { documentElement } = document;
-                if(documentElement.requestFullscreen) documentElement.requestFullscreen();
-                else if(documentElement.mozRequestFullScreen) documentElement.mozRequestFullScreen();
-                else if(documentElement.webkitRequestFullscreen) documentElement.webkitRequestFullscreen();
-                else if(documentElement.msRequestFullscreen) documentElement.msRequestFullscreen();
-            }
+    <!-- Google tag (gtag.js) -->
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-07T0N39Y0D">
+    </script>
 
-            acceptButton.addEventListener("click", buttonClick);
-            declineButton.addEventListener("click", buttonClick);
-            video.addEventListener("click", videoClick);
-        </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-07T0N39Y0D"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+        function gtag() {
+            dataLayer.push(arguments);
+        }
 
-  gtag('config', 'G-07T0N39Y0D');
-</script>
+        gtag("js", new Date());
+        gtag("config", "G-07T0N39Y0D");
+    </script>
 
-</body></html>
+</body>
+</html>
